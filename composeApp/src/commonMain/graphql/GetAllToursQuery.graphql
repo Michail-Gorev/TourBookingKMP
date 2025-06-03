@@ -1,0 +1,11 @@
+query GetAllToursQuery{
+    tours {
+        id
+        title
+        price
+        city
+        museums {
+            id
+        }
+    }
+}
