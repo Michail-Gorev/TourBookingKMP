@@ -1,6 +1,7 @@
 package org.example.tourbookingkmp.domain
 
 import org.example.tourbookingkmp.GetAllToursQuery
+import org.example.tourbookingkmp.apolloClient
 import org.example.tourbookingkmp.models.Tour
 
 object TourRepository {
