@@ -1,0 +1,11 @@
+query GetTourDetailsByTourId ($id: ID!) {
+    tour(id: $id) {
+        title
+        description
+        isActive
+        museums {
+            name
+            city
+        }
+    }
+}

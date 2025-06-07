@@ -21,12 +21,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import org.example.tourbookingkmp.models.Tour
 import org.example.tourbookingkmp.ui.TourCard
 import org.example.tourbookingkmp.viewModels.GetAllToursViewModel
 
 @Composable
-fun ToursListScreen(viewModel: GetAllToursViewModel) {
+fun ToursListScreen(viewModel: GetAllToursViewModel,
+                    navController: NavController) {
     val uiState = viewModel.uiState.collectAsState() // Автоматическая подписка
     // Действие на старт экрана. Без него не запустится loadData, без чего
     // не произойдет изменения состояния с Loading на Success (произойдет зависание на
@@ -36,12 +38,13 @@ fun ToursListScreen(viewModel: GetAllToursViewModel) {
     }
     when (val state = uiState.value) {
         is GetAllToursViewModel.UiState.Loading -> LoadingScreen(message = "Загружаем туры для Вас")
-        is GetAllToursViewModel.UiState.Success -> SuccessScreen(state.data)
+        is GetAllToursViewModel.UiState.Success -> SuccessScreen(state.data, navController)
         is GetAllToursViewModel.UiState.Error -> ErrorScreen("Network Error")
     }
 }
 @Composable
-fun SuccessScreen(data: List<Tour>) {
+fun SuccessScreen(data: List<Tour>,
+                  navController: NavController) {
     var showContent by remember { mutableStateOf(false) }
 
     Column(
@@ -64,7 +67,7 @@ fun SuccessScreen(data: List<Tour>) {
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(data) { tour ->
-                        TourCard(tour = tour)
+                        TourCard(tour = tour, navController)
                     }
                 }
             }

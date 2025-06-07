@@ -6,5 +6,4 @@ data class Tour(
     val city: String,
     val price: Double,
     val transfer: Boolean,
-    val isActive: Boolean) {
-}
+    val isActive: Boolean)
