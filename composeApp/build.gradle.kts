@@ -16,7 +16,7 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -27,9 +27,9 @@ kotlin {
             isStatic = true
         }
     }
-    
+
     sourceSets {
-        
+
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
@@ -44,7 +44,16 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.apollo.runtime)
-            implementation(libs.androidx.navigation.compose)
+
+            // Multiplatform Navigation - Voyager
+            // Navigator
+            implementation(libs.voyager.navigator)
+            // BottomSheetNavigator
+            implementation(libs.voyager.bottomSheetNavigator)
+            // Transitions
+            implementation(libs.voyager.transitions)
+            // Koin integration
+            implementation(libs.voyager.koin)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

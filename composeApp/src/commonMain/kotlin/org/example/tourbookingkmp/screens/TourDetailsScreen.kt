@@ -10,30 +10,36 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.model.rememberScreenModel
+import cafe.adriel.voyager.core.screen.Screen
 import org.example.tourbookingkmp.models.TourDetails
+import org.example.tourbookingkmp.repositories.TourDetailsRepository
 import org.example.tourbookingkmp.ui.TourDetailsCard
 import org.example.tourbookingkmp.viewModels.GetTourDetailsViewModel
 
-@Composable
-fun TourDetailsScreen(
-    viewModel: GetTourDetailsViewModel,
-    tourId: Int
-) {
-    val uiState = viewModel.uiState.collectAsState() // Автоматическая подписка
-    // Действие на старт экрана. Без него не запустится loadData, без чего
-    // не произойдет изменения состояния с Loading на Success (произойдет зависание на
-    // LoadingScreen)
-    LaunchedEffect(Unit) {
-        viewModel.loadData(tourId)
+
+data class TourDetailsScreen(val tourId: Int): Screen {
+
+    @Composable
+    override fun Content() {
+        val screenModel = rememberScreenModel { GetTourDetailsViewModel(TourDetailsRepository) }
+        val uiState = screenModel.state.collectAsState() // Автоматическая подписка
+        // Действие на старт экрана. Без него не запустится loadData, без чего
+        // не произойдет изменения состояния с Loading на Success (произойдет зависание на
+        // LoadingScreen)
+        LaunchedEffect(Unit) {
+            screenModel.loadData(tourId)
+        }
+        when (val state = uiState.value) {
+            is GetTourDetailsViewModel.State.Loading -> LoadingScreen(
+                message = "Загружаем информацию" +
+                        " о выбранном туре"
+            )
+            is GetTourDetailsViewModel.State.Success -> SuccessScreen(state.data)
+            is GetTourDetailsViewModel.State.Error -> ErrorScreen("Network Error")
+        }
     }
-    when (val state = uiState.value) {
-        is GetTourDetailsViewModel.UiState.Loading -> LoadingScreen(
-            message = "Загружаем информацию" +
-                    " о выбранном туре"
-        )
-        is GetTourDetailsViewModel.UiState.Success -> SuccessScreen(state.data)
-        is GetTourDetailsViewModel.UiState.Error -> ErrorScreen("Network Error")
-    }
+
 }
 
 @Composable

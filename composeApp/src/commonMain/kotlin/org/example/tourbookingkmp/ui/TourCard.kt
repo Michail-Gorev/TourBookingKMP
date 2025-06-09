@@ -13,12 +13,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import cafe.adriel.voyager.navigator.Navigator
 import org.example.tourbookingkmp.models.Tour
-import org.example.tourbookingkmp.navigation.NavigationArguments
+import org.example.tourbookingkmp.screens.TourDetailsScreen
 
 @Composable
-fun TourCard(tour: Tour, navController: NavController) {
+fun TourCard(tour: Tour, navigator: Navigator) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -39,10 +39,7 @@ fun TourCard(tour: Tour, navController: NavController) {
                 Button(
                     onClick = {
                         val tourId = tour.id.toString().toInt()
-                        navController.navigate(NavigationArguments.createTourDetailsRoute(tourId))
-                        navController.currentBackStackEntry?.savedStateHandle?.set(
-                            "tourId", tourId
-                        )
+                        navigator.push(TourDetailsScreen(tourId))
                     }
                 ) {
                     Text(text = "Детали")

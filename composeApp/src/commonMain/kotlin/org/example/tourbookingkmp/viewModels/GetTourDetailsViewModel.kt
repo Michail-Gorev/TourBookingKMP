@@ -1,36 +1,28 @@
 package org.example.tourbookingkmp.viewModels
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+
+import cafe.adriel.voyager.core.model.StateScreenModel
+import cafe.adriel.voyager.core.model.screenModelScope
 import kotlinx.coroutines.launch
 import org.example.tourbookingkmp.models.TourDetails
-import org.example.tourbookingkmp.repositories.TourDetailsRepository.fetchTourDetails
+import org.example.tourbookingkmp.repositories.TourDetailsRepository
 
-class GetTourDetailsViewModel : ViewModel() {
-    private val _uiState = MutableStateFlow<UiState>(UiState.Loading)
-    val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
+class GetTourDetailsViewModel(
+    private val repository: TourDetailsRepository
+) : StateScreenModel<GetTourDetailsViewModel.State>(State.Loading) {
+
+    sealed class State {
+        data object Loading : State()
+        data class Success(val data: TourDetails) : State()
+        data class Error(val message: String?) : State()
+    }
     fun loadData(tourId: Int) {
-        // Если уже в состоянии Success, не загружаем снова
-        if (_uiState.value is UiState.Success) return
-
-        viewModelScope.launch {
-            _uiState.value = UiState.Loading
-            try {
-                val data = fetchTourDetails(tourId)
-                _uiState.value = UiState.Success(data)
-            } catch (e: Exception) {
-                _uiState.value = UiState.Error(e.message)
-            }
+        screenModelScope.launch {
+            mutableState.value = State.Loading
+            mutableState.value = State.Success(data = repository.fetchTourDetails(tourId))
         }
     }
 
-    sealed class UiState {
-        data object Loading : UiState()
-        data class Success(val data: TourDetails) : UiState()
-        data class Error(val message: String?) : UiState()
-    }
+
 }

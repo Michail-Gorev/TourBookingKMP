@@ -21,32 +21,38 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import org.example.tourbookingkmp.models.Tour
 import org.example.tourbookingkmp.ui.TourCard
 import org.example.tourbookingkmp.viewModels.GetAllToursViewModel
 
-@Composable
-fun ToursListScreen(viewModel: GetAllToursViewModel,
-                    navController: NavController) {
-    val uiState = viewModel.uiState.collectAsState() // Автоматическая подписка
-    // Действие на старт экрана. Без него не запустится loadData, без чего
-    // не произойдет изменения состояния с Loading на Success (произойдет зависание на
-    // LoadingScreen)
-    LaunchedEffect(Unit) {
-        viewModel.loadData()
-    }
-    when (val state = uiState.value) {
-        is GetAllToursViewModel.UiState.Loading -> LoadingScreen(message = "Загружаем туры для Вас")
-        is GetAllToursViewModel.UiState.Success -> SuccessScreen(state.data, navController)
-        is GetAllToursViewModel.UiState.Error -> ErrorScreen("Network Error")
+
+class ToursListScreen: Screen {
+
+    @Composable
+    override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
+        val viewModel = remember {  GetAllToursViewModel()}
+        val uiState = viewModel.state.collectAsState() // Автоматическая подписка
+        // Действие на старт экрана. Без него не запустится loadData, без чего
+        // не произойдет изменения состояния с Loading на Success (произойдет зависание на
+        // LoadingScreen)
+        LaunchedEffect(Unit) {
+            viewModel.loadData()
+        }
+        when (val state = uiState.value) {
+            is GetAllToursViewModel.State.Loading -> LoadingScreen(message = "Загружаем туры для Вас")
+            is GetAllToursViewModel.State.Success -> SuccessScreen(state.data, navigator)
+            is GetAllToursViewModel.State.Error -> ErrorScreen(state.message)
+        }
     }
 }
 @Composable
-fun SuccessScreen(data: List<Tour>,
-                  navController: NavController) {
+fun SuccessScreen(data: List<Tour>, navigator: Navigator) {
     var showContent by remember { mutableStateOf(false) }
-
     Column(
         modifier = Modifier
             .safeContentPadding()
@@ -67,7 +73,7 @@ fun SuccessScreen(data: List<Tour>,
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(data) { tour ->
-                        TourCard(tour = tour, navController)
+                        TourCard(tour = tour, navigator)
                     }
                 }
             }
