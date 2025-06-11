@@ -20,6 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
@@ -34,7 +35,7 @@ class ToursListScreen: Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val viewModel = remember {  GetAllToursViewModel()}
+        val viewModel = rememberScreenModel {  GetAllToursViewModel()}
         val uiState = viewModel.state.collectAsState() // Автоматическая подписка
 
         when (val state = uiState.value) {
