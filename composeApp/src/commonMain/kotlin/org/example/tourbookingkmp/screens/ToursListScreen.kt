@@ -37,12 +37,7 @@ class ToursListScreen: Screen {
         val navigator = LocalNavigator.currentOrThrow
         val viewModel = remember {  GetAllToursViewModel()}
         val uiState = viewModel.state.collectAsState() // Автоматическая подписка
-        // Действие на старт экрана. Без него не запустится loadData, без чего
-        // не произойдет изменения состояния с Loading на Success (произойдет зависание на
-        // LoadingScreen)
-        LaunchedEffect(Unit) {
-            viewModel.loadData()
-        }
+
         when (val state = uiState.value) {
             is GetAllToursViewModel.State.Loading -> LoadingScreen(message = "Загружаем туры для Вас")
             is GetAllToursViewModel.State.Success -> SuccessScreen(state.data, navigator)
