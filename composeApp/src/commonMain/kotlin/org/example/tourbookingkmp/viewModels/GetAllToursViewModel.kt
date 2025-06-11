@@ -4,17 +4,16 @@ import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import kotlinx.coroutines.launch
 import org.example.tourbookingkmp.models.Tour
-import org.example.tourbookingkmp.repositories.TourRepository
-import org.example.tourbookingkmp.usecases.getAllToursUseCase
+import org.example.tourbookingkmp.usecases.GetAllToursUseCase
 
 class GetAllToursViewModel(
-    private val repository: TourRepository = TourRepository //TODO заменить на DI
+    private val getAllToursUseCase: GetAllToursUseCase = GetAllToursUseCase() //TODO заменить на DI
 ): StateScreenModel<GetAllToursViewModel.State>(State.Loading) {
 
     init {
         screenModelScope.launch {
             mutableState.value = State.Loading
-            mutableState.value = State.Success(getAllToursUseCase(repository))
+            mutableState.value = State.Success(getAllToursUseCase.invoke())
         }
     }
     sealed class State {
