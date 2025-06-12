@@ -36,14 +36,6 @@ fun TourCard(tour: Tour, navigator: Navigator) {
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.onSurface
                 )
-                Button(
-                    onClick = {
-                        val tourId = tour.id.toString().toInt()
-                        navigator.push(TourDetailsScreen(tourId))
-                    }
-                ) {
-                    Text(text = "Детали")
-                }
             }
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -54,12 +46,19 @@ fun TourCard(tour: Tour, navigator: Navigator) {
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-
                 Text(
                     text = "${tour.price} р.",
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.primary
                 )
+                Button(
+                    onClick = {
+                        val tourId = tour.id.toString().toInt()
+                        navigator.push(TourDetailsScreen(tourId))
+                    }
+                ) {
+                    Text(text = "Детали")
+                }
             }
         }
     }

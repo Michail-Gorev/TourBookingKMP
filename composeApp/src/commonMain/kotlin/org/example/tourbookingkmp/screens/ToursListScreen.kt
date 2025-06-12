@@ -56,12 +56,12 @@ fun SuccessScreen(data: List<Tour>, navigator: Navigator) {
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Button(onClick = { showContent = !showContent }) {
-            Text(if (showContent) "Hide tours" else "Show tours")
+            Text(if (showContent) "Скрыть туры" else "Показать туры")
         }
 
         AnimatedVisibility(showContent) {
             if (data.isEmpty()) {
-                Text("No tours available", style = MaterialTheme.typography.bodyMedium)
+                Text("Информация недоступна", style = MaterialTheme.typography.bodyMedium)
             } else {
                 LazyColumn(
                     modifier = Modifier.fillMaxWidth(),

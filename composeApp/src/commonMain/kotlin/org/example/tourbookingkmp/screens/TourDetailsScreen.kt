@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -13,7 +12,6 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import org.example.tourbookingkmp.models.TourDetails
-import org.example.tourbookingkmp.repositories.TourDetailsRepository
 import org.example.tourbookingkmp.ui.TourDetailsCard
 import org.example.tourbookingkmp.viewModels.GetTourDetailsViewModel
 
@@ -22,14 +20,9 @@ data class TourDetailsScreen(val tourId: Int): Screen {
 
     @Composable
     override fun Content() {
-        val screenModel = rememberScreenModel { GetTourDetailsViewModel(TourDetailsRepository) }
+        val screenModel = rememberScreenModel { GetTourDetailsViewModel(tourId) }
         val uiState = screenModel.state.collectAsState() // Автоматическая подписка
-        // Действие на старт экрана. Без него не запустится loadData, без чего
-        // не произойдет изменения состояния с Loading на Success (произойдет зависание на
-        // LoadingScreen)
-        LaunchedEffect(Unit) {
-            screenModel.loadData(tourId)
-        }
+
         when (val state = uiState.value) {
             is GetTourDetailsViewModel.State.Loading -> LoadingScreen(
                 message = "Загружаем информацию" +
