@@ -4,5 +4,8 @@ query GetAllToursQuery{
         title
         price
         city
+        museums {
+            name
+        }
     }
 }
