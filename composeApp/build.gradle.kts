@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -11,7 +10,6 @@ plugins {
 
 kotlin {
     androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
@@ -44,16 +42,10 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.apollo.runtime)
-
-            // Multiplatform Navigation - Voyager
-            // Navigator
-            implementation(libs.voyager.navigator)
-            // BottomSheetNavigator
-            implementation(libs.voyager.bottomSheetNavigator)
-            // Transitions
-            implementation(libs.voyager.transitions)
-            // Koin integration
-            implementation(libs.voyager.koin)
+            implementation(libs.koin.core)
+            implementation(libs.navigation.compose)
+            implementation(libs.koin.compose.viewmodel)
+            implementation(libs.koin.compose.viewmodel.navigation)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

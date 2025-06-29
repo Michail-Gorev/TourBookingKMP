@@ -16,12 +16,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.navigator.Navigator
+import androidx.navigation.NavHostController
 import org.example.tourbookingkmp.models.Tour
-import org.example.tourbookingkmp.screens.TourDetailsScreen
 
 @Composable
-fun TourCard(tour: Tour, navigator: Navigator) {
+fun TourCard(tour: Tour, navController: NavHostController) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -65,8 +64,7 @@ fun TourCard(tour: Tour, navigator: Navigator) {
 
                 Button(
                     onClick = {
-                        val tourId = tour.id.toString().toInt()
-                        navigator.push(TourDetailsScreen(tourId))
+                        navController.navigate("tour_details/${tour.id}")
                     },
                     modifier = Modifier.widthIn(min = 100.dp)
                 ) {

@@ -4,12 +4,10 @@ import org.example.tourbookingkmp.models.TourDetails
 import org.example.tourbookingkmp.repositories.TourDetailsRepository
 
 class GetTourDetailsByIdUseCase(
-    private val repository: TourDetailsRepository = TourDetailsRepository, //TODO заменить на DI
-    private val tourId: Comparable<*>) {
+    private val repository: TourDetailsRepository) {
 
-    suspend fun invoke(): TourDetails {
-        val tourId = tourId.toString().toInt()
-        val tourDetails: TourDetails = repository.fetchTourDetails(tourId)
+    suspend fun invoke(tourId: Comparable<*>): TourDetails {
+        val tourDetails: TourDetails = repository.fetchTourDetails(tourId.toString().toInt())
         return tourDetails
     }
 }

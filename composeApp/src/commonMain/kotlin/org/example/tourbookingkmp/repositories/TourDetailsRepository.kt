@@ -5,7 +5,7 @@ import org.example.tourbookingkmp.apolloClient
 import org.example.tourbookingkmp.models.Museum
 import org.example.tourbookingkmp.models.TourDetails
 
-object TourDetailsRepository {
+class TourDetailsRepository {
     suspend fun fetchTourDetails(tourId: Int): TourDetails {
         val response = apolloClient.query(GetTourDetailsByTourIdQuery(tourId.toString())).execute()
         val museums: List<Museum> = response.data?.tour?.museums?.map {

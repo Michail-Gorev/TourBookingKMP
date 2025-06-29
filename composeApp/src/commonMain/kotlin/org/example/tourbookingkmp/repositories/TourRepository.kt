@@ -4,7 +4,7 @@ import org.example.tourbookingkmp.GetAllToursQuery
 import org.example.tourbookingkmp.apolloClient
 import org.example.tourbookingkmp.models.Tour
 
-object TourRepository {
+class TourRepository {
     suspend fun fetchToursData(): List<Tour> {
         val response = apolloClient.query(GetAllToursQuery()).execute()
         return response.data?.tours?.map {
