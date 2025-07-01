@@ -24,6 +24,7 @@ kotlin {
             baseName = "ComposeApp"
             isStatic = true
         }
+
     }
 
     sourceSets {
@@ -93,3 +94,4 @@ apollo {
         }
     }
 }
+

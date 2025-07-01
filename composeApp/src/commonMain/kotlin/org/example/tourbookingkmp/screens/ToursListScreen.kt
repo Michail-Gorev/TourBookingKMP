@@ -1,7 +1,9 @@
+// ToursListScreen.kt
 package org.example.tourbookingkmp.screens
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,19 +14,25 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import kotlinx.coroutines.launch
 import org.example.tourbookingkmp.models.Tour
 import org.example.tourbookingkmp.ui.TourCard
 import org.example.tourbookingkmp.usecases.SearchTourByCityUseCase
@@ -35,22 +43,51 @@ fun ToursListScreen(
     viewModel: GetAllToursViewModel,
     navController: NavHostController
 ) {
-    val uiState = viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
+    val errorEvents = viewModel.errorEvents
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
 
-    when (val state = uiState.value) {
-        is GetAllToursViewModel.UiState.Loading -> LoadingScreen(message = "Загружаем туры для Вас")
-        is GetAllToursViewModel.UiState.Success -> SuccessScreen(state.data, navController)
-        is GetAllToursViewModel.UiState.Error -> ErrorScreen(state.message)
+    // Обработка ошибок
+    LaunchedEffect(errorEvents) {
+        errorEvents.collect { errorMessage ->
+            scope.launch {
+                snackbarHostState.showSnackbar(
+                    message = errorMessage,
+                    withDismissAction = true
+                )
+            }
+        }
+    }
+    Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+    ) { padding ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+        ) {
+            when (uiState) {
+                is GetAllToursViewModel.UiState.Loading -> {
+                    LoadingScreen(message = "Загружаем туры для Вас")
+                }
+                is GetAllToursViewModel.UiState.Success -> {
+                    val tours = (uiState as GetAllToursViewModel.UiState.Success).data
+                    SuccessScreen(tours, navController)
+                }
+            }
+        }
     }
 }
 
-
 @Composable
-fun SuccessScreen(data: List<Tour>, navController: NavHostController) {
+private fun SuccessScreen(
+    data: List<Tour>,
+    navController: NavHostController
+) {
     var showContent by remember { mutableStateOf(true) }
     var cityFilter by remember { mutableStateOf("") }
 
-    // Фильтрация данных по городу
     val filteredData = SearchTourByCityUseCase(cityFilter, data).invoke()
 
     Column(

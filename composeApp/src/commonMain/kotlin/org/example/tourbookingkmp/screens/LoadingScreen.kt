@@ -24,7 +24,8 @@ fun LoadingScreen(
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             CircularProgressIndicator(
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.primary,
+                trackColor = MaterialTheme.colorScheme.surfaceVariant,
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
