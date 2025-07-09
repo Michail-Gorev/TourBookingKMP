@@ -1,7 +1,7 @@
-package org.example.tourbookingkmp.usecases
+package org.example.tourbookingkmp.domain.usecases
 
-import org.example.tourbookingkmp.models.Tour
-import org.example.tourbookingkmp.repositories.TourRepository
+import org.example.tourbookingkmp.domain.models.Tour
+import org.example.tourbookingkmp.domain.interfaces.repositories.TourRepository
 
 class GetAllToursUseCase(
     private val repository: TourRepository

@@ -1,5 +1,4 @@
-// ToursListScreen.kt
-package org.example.tourbookingkmp.screens
+package org.example.tourbookingkmp.presentation.screens
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
@@ -26,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,32 +33,35 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.launch
-import org.example.tourbookingkmp.models.Tour
-import org.example.tourbookingkmp.ui.TourCard
-import org.example.tourbookingkmp.usecases.SearchTourByCityUseCase
-import org.example.tourbookingkmp.viewModels.GetAllToursViewModel
+import org.example.tourbookingkmp.domain.models.Tour
+import org.example.tourbookingkmp.presentation.ui.TourCard
+import org.example.tourbookingkmp.presentation.viewModels.GetAllToursViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun ToursListScreen(
-    viewModel: GetAllToursViewModel,
+    viewModel: GetAllToursViewModel = koinViewModel(),
     navController: NavHostController
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val errorEvents = viewModel.errorEvents
+    val cityFilter by viewModel.cityFilter.collectAsState()
+    val filteredTours by viewModel.filteredTours.collectAsState()
+
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
-    // Обработка ошибок
-    LaunchedEffect(errorEvents) {
-        errorEvents.collect { errorMessage ->
+    // Обработка ошибок в канале
+    LaunchedEffect(Unit) {
+        viewModel.errorEvents.collect { error ->
             scope.launch {
                 snackbarHostState.showSnackbar(
-                    message = errorMessage,
+                    message = error,
                     withDismissAction = true
                 )
             }
         }
     }
+
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { padding ->
@@ -71,24 +74,34 @@ fun ToursListScreen(
                 is GetAllToursViewModel.UiState.Loading -> {
                     LoadingScreen(message = "Загружаем туры для Вас")
                 }
+
                 is GetAllToursViewModel.UiState.Success -> {
-                    val tours = (uiState as GetAllToursViewModel.UiState.Success).data
-                    SuccessScreen(tours, navController)
+                    SuccessScreen(
+                        cityFilter = cityFilter,
+                        onCityFilterChange = viewModel::updateCityFilter,
+                        tours = filteredTours,
+                        navController = navController
+                    )
+                }
+                is GetAllToursViewModel.UiState.Error -> {
+                    ErrorScreen(
+                        (uiState as GetAllToursViewModel.UiState.Error).message
+                    )
                 }
             }
         }
     }
 }
 
+
 @Composable
 private fun SuccessScreen(
-    data: List<Tour>,
+    cityFilter: String,
+    onCityFilterChange: (String) -> Unit,
+    tours: List<Tour>,
     navController: NavHostController
 ) {
-    var showContent by remember { mutableStateOf(true) }
-    var cityFilter by remember { mutableStateOf("") }
-
-    val filteredData = SearchTourByCityUseCase(cityFilter, data).invoke()
+    var showContent by rememberSaveable { mutableStateOf(true) }
 
     Column(
         modifier = Modifier
@@ -100,7 +113,7 @@ private fun SuccessScreen(
     ) {
         TextField(
             value = cityFilter,
-            onValueChange = { cityFilter = it },
+            onValueChange = onCityFilterChange,
             modifier = Modifier.fillMaxWidth(),
             label = { Text("Поиск по городу") },
             singleLine = true,
@@ -112,7 +125,7 @@ private fun SuccessScreen(
         }
 
         AnimatedVisibility(showContent) {
-            if (filteredData.isEmpty()) {
+            if (tours.isEmpty()) {
                 Text(
                     text = if (cityFilter.isNotEmpty())
                         "Не найдено туров по городу: $cityFilter"
@@ -125,7 +138,7 @@ private fun SuccessScreen(
                     modifier = Modifier.fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    items(filteredData) { tour ->
+                    items(tours) { tour ->
                         TourCard(tour = tour, navController)
                     }
                 }

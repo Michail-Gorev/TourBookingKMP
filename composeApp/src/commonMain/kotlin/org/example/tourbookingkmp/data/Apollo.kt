@@ -1,4 +1,4 @@
-package org.example.tourbookingkmp
+package org.example.tourbookingkmp.data
 
 import com.apollographql.apollo.ApolloClient
 

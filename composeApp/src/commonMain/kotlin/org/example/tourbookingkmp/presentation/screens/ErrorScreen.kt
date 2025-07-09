@@ -1,4 +1,4 @@
-package org.example.tourbookingkmp.screens
+package org.example.tourbookingkmp.presentation.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

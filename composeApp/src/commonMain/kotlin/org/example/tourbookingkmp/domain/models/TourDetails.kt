@@ -1,4 +1,4 @@
-package org.example.tourbookingkmp.models
+package org.example.tourbookingkmp.domain.models
 
 data class TourDetails(
     val title: String,

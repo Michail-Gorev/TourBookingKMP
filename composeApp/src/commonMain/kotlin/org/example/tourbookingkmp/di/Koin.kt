@@ -1,26 +1,31 @@
 package org.example.tourbookingkmp.di
 
-import org.example.tourbookingkmp.repositories.TourDetailsRepository
-import org.example.tourbookingkmp.repositories.TourRepository
-import org.example.tourbookingkmp.usecases.GetAllToursUseCase
-import org.example.tourbookingkmp.usecases.GetTourDetailsByIdUseCase
-import org.example.tourbookingkmp.viewModels.GetAllToursViewModel
-import org.example.tourbookingkmp.viewModels.GetTourDetailsViewModel
+import org.example.tourbookingkmp.data.repositories.TourDetailsRepositoryImpl
+import org.example.tourbookingkmp.data.repositories.TourRepositoryImpl
+import org.example.tourbookingkmp.domain.interfaces.repositories.TourDetailsRepository
+import org.example.tourbookingkmp.domain.interfaces.repositories.TourRepository
+import org.example.tourbookingkmp.domain.usecases.GetAllToursUseCase
+import org.example.tourbookingkmp.domain.usecases.GetTourDetailsByIdUseCase
+import org.example.tourbookingkmp.domain.usecases.SearchTourByCityUseCase
+import org.example.tourbookingkmp.presentation.viewModels.GetAllToursViewModel
+import org.example.tourbookingkmp.presentation.viewModels.GetTourDetailsViewModel
 import org.koin.core.context.startKoin
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val appModule = module {
     // Репозитории
-    single { TourRepository() }
-    single { TourDetailsRepository() }
+    single<TourRepository> { TourRepositoryImpl() }
+    single<TourDetailsRepository> { TourDetailsRepositoryImpl() }
 
     // UseCases
     factory { GetAllToursUseCase(get()) }
     factory { GetTourDetailsByIdUseCase(get()) }
+    factory { SearchTourByCityUseCase() }
 
     // ViewModels
-    factory { GetAllToursViewModel(get()) }
-    factory { (tourId: Comparable<*>) ->
+    viewModel { GetAllToursViewModel(get(), get()) }
+    viewModel { (tourId: Comparable<*>) ->
         GetTourDetailsViewModel(tourId = tourId, useCase = get())
     }
 }

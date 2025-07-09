@@ -1,4 +1,4 @@
-package org.example.tourbookingkmp.ui
+package org.example.tourbookingkmp.presentation.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
@@ -27,8 +27,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import org.example.tourbookingkmp.models.Museum
-import org.example.tourbookingkmp.models.TourDetails
+import org.example.tourbookingkmp.domain.models.Museum
+import org.example.tourbookingkmp.domain.models.TourDetails
 
 @Composable
 fun TourDetailsCard(

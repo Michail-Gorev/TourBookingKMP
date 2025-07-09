@@ -1,12 +1,14 @@
-package org.example.tourbookingkmp.repositories
+package org.example.tourbookingkmp.data.repositories
 
 import org.example.tourbookingkmp.GetTourDetailsByTourIdQuery
-import org.example.tourbookingkmp.apolloClient
-import org.example.tourbookingkmp.models.Museum
-import org.example.tourbookingkmp.models.TourDetails
+import org.example.tourbookingkmp.data.apolloClient
+import org.example.tourbookingkmp.domain.interfaces.repositories.TourDetailsRepository
+import org.example.tourbookingkmp.domain.models.Museum
+import org.example.tourbookingkmp.domain.models.TourDetails
 
-class TourDetailsRepository {
-    suspend fun fetchTourDetails(tourId: Int): TourDetails {
+class TourDetailsRepositoryImpl: TourDetailsRepository {
+
+    override suspend fun fetchTourDetails(tourId: Int): TourDetails {
         val response = apolloClient.query(GetTourDetailsByTourIdQuery(tourId.toString())).execute()
         val museums: List<Museum> = response.data?.tour?.museums?.map {
             Museum (

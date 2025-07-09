@@ -1,4 +1,4 @@
-package org.example.tourbookingkmp.ui
+package org.example.tourbookingkmp.presentation.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import org.example.tourbookingkmp.models.Tour
+import org.example.tourbookingkmp.domain.models.Tour
 
 @Composable
 fun TourCard(tour: Tour, navController: NavHostController) {
