@@ -9,7 +9,6 @@ import org.example.tourbookingkmp.domain.usecases.GetTourDetailsByIdUseCase
 import org.example.tourbookingkmp.domain.usecases.SearchTourByCityUseCase
 import org.example.tourbookingkmp.presentation.viewModels.GetAllToursViewModel
 import org.example.tourbookingkmp.presentation.viewModels.GetTourDetailsViewModel
-import org.koin.core.context.startKoin
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -27,11 +26,5 @@ val appModule = module {
     viewModel { GetAllToursViewModel(get(), get()) }
     viewModel { (tourId: Comparable<*>) ->
         GetTourDetailsViewModel(tourId = tourId, useCase = get())
-    }
-}
-
-fun initKoin() {
-    startKoin {
-        modules(appModule)
     }
 }

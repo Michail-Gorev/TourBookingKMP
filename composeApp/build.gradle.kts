@@ -1,11 +1,11 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.apollo)
+    alias(libs.plugins.kotlinCocoapods) version "2.1.21"
 }
 
 kotlin {
@@ -14,7 +14,16 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-
+    cocoapods {
+        version = "1.0.1"
+        summary = "Common KMM module"
+        homepage = "https://github.com/Michail-Gorev/TourBookingKMP"
+        ios.deploymentTarget = "16.0"
+        framework {
+            baseName = "composeApp"
+            isStatic = false
+        }
+    }
     listOf(
         iosX64(),
         iosArm64(),
@@ -25,7 +34,6 @@ kotlin {
             isStatic = true
         }
     }
-
     sourceSets {
         androidMain.dependencies {
             implementation(compose.preview)
@@ -91,5 +99,11 @@ apollo {
             endpointUrl.set("https://graphql-tours-server.onrender.com")
             schemaFile.set(file("graphql/schema.graphqls"))
         }
+    }
+}
+
+tasks.register("printEnv") {
+    doLast {
+        println(System.getenv("PATH"))
     }
 }

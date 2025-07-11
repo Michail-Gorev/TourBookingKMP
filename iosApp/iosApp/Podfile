@@ -1,0 +1,7 @@
+platform :ios, '16.0'  # Минимальная версия iOS
+use_frameworks!        # Обязательно для Kotlin/Native
+
+target 'iosApp' do
+  # Подключаем общий модуль KMM (commonMain)
+  pod 'shared', :path => '../composeApp/commonMain'  # Указывает на shared/build/cocoapods/framework
+end
