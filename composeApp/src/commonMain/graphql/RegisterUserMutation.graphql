@@ -1,0 +1,11 @@
+mutation RegisterUserMutation($input: UserInput!) {
+    createUser(input: $input) {
+        token
+        user {
+            id
+            firstName
+            lastName
+            email
+        }
+    }
+}

@@ -91,19 +91,12 @@ android {
 dependencies {
     debugImplementation(compose.uiTooling)
 }
-
 apollo {
     service("service") {
         packageName.set("org.example.tourbookingkmp")
         introspection {
             endpointUrl.set("https://graphql-tours-server.onrender.com")
-            schemaFile.set(file("graphql/schema.graphqls"))
+            schemaFile.set(file("src/commonMain/graphql/schema.graphqls"))
         }
-    }
-}
-
-tasks.register("printEnv") {
-    doLast {
-        println(System.getenv("PATH"))
     }
 }

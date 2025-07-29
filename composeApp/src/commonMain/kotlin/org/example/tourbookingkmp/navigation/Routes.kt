@@ -1,11 +1,8 @@
 package org.example.tourbookingkmp.navigation
 
 object Routes {
-    const val TOURS_LIST = "toursList"
-    const val TOUR_DETAILS = "tourDetails"
-}
-
-object NavigationArguments {
-    const val TOUR_ID = "tourId"
-    fun createTourDetailsRoute(tourId: Int) = "${Routes.TOUR_DETAILS}/$tourId"
+    const val TOURS_LIST = "tours_list"
+    const val TOUR_DETAILS = "tour_details/{tourId}"
+    const val LOGIN = "login_screen"
+    const val REGISTER = "registration_screen"
 }
