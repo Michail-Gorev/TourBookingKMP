@@ -14,7 +14,9 @@ class LoginUserByEmailUseCase(
     ): User {
         val user = userRepository.getUser(email, password)
         val token = userTokenRepository.getUserToken(user)
-        userTokenRepository.saveUserToken(token)
+        if (token.isNotEmpty()) {
+            userTokenRepository.saveUserToken(token)
+        }
         return user
     }
 }

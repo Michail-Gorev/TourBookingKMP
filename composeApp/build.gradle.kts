@@ -95,7 +95,7 @@ apollo {
     service("service") {
         packageName.set("org.example.tourbookingkmp")
         introspection {
-            endpointUrl.set("https://graphql-tours-server.onrender.com")
+            endpointUrl.set("http://192.168.1.32:4000")
             schemaFile.set(file("src/commonMain/graphql/schema.graphqls"))
         }
     }
