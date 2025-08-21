@@ -8,4 +8,5 @@ interface UserTokenRepository {
     ): String
 
     suspend fun saveUserToken(token: String): String
+    fun readUserTokenFromFile(): String
 }

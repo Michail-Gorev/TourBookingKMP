@@ -1,12 +1,12 @@
 package org.example.tourbookingkmp.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import org.example.tourbookingkmp.domain.interfaces.repositories.UserTokenRepository
 import org.example.tourbookingkmp.presentation.screens.LoginScreen
 import org.example.tourbookingkmp.presentation.screens.RegistrationScreen
 import org.example.tourbookingkmp.presentation.screens.TourDetailsScreen
@@ -15,16 +15,21 @@ import org.example.tourbookingkmp.presentation.viewModels.GetAllToursViewModel
 import org.example.tourbookingkmp.presentation.viewModels.GetTourDetailsViewModel
 import org.example.tourbookingkmp.presentation.viewModels.LoginUserByEmailViewModel
 import org.example.tourbookingkmp.presentation.viewModels.RegisterUserByEmailViewModel
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
+    val userTokenRepository = koinInject<UserTokenRepository>()
+    val token = userTokenRepository.readUserTokenFromFile()
 
     NavHost(
         navController = navController,
-        startDestination = "login_screen"
+        startDestination = if (token.isNotBlank()) {
+            Routes.TOURS_LIST
+        } else Routes.LOGIN
     ) {
         composable(Routes.TOURS_LIST) {
             val viewModel: GetAllToursViewModel = koinViewModel()

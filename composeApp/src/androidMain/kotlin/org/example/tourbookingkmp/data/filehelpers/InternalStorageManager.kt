@@ -1,8 +1,5 @@
 package org.example.tourbookingkmp.data.filehelpers
 
-import android.content.Context
-import kotlinx.coroutines.currentCoroutineContext
-import org.example.tourbookingkmp.presenter.MainActivity
 import java.io.File
 
 // TODO доделать использование context вместо захардкоженного пути до файловой директории
@@ -21,6 +18,20 @@ actual class InternalStorageManager actual constructor () {
         } catch (e: Exception) {
             e.printStackTrace()
             return "Error, occurred during saving, is above."
+        }
+    }
+
+    actual fun readPlainTextDataFromFile(
+        fileName: String
+    ): String {
+        try {
+            val filesDir= "/data/data/org.example.tourbookingkmp/files"
+            val file = File(filesDir, fileName)
+            val token = file.readText()
+            return token
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return ""
         }
     }
 }

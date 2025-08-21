@@ -5,4 +5,7 @@ expect class InternalStorageManager () {
         data: String,
         fileName: String
     ): String
+    fun readPlainTextDataFromFile(
+        fileName: String
+    ): String
 }

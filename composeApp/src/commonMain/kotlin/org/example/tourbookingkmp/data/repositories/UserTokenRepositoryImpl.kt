@@ -14,8 +14,13 @@ class UserTokenRepositoryImpl : UserTokenRepository {
         val internalStorageManager = InternalStorageManager()
         val success = internalStorageManager
             .savePlainTextDataToFile(token, "userToken.txt")
-        println("Result of saving: $success")
-        println("token: $token")
-        return ""
+        return success
+    }
+
+    override fun readUserTokenFromFile(): String {
+        val internalStorageManager = InternalStorageManager()
+        val token = internalStorageManager
+            .readPlainTextDataFromFile("userToken.txt")
+        return token
     }
 }
