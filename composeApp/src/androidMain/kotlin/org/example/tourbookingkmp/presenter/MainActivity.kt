@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import org.example.tourbookingkmp.App
+import org.example.tourbookingkmp.data.filehelpers.InternalStorageManager
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,6 +16,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             App()
         }
+        InternalStorageManager.init(this)
     }
 }
 

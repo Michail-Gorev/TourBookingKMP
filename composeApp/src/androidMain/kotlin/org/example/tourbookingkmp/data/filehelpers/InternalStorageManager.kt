@@ -1,17 +1,16 @@
 package org.example.tourbookingkmp.data.filehelpers
 
+import android.content.Context
 import java.io.File
 
-// TODO доделать использование context вместо захардкоженного пути до файловой директории
-actual class InternalStorageManager actual constructor () {
-//    private val context: Context
-//        get() = MainActivity().baseContext
+actual class InternalStorageManager {
+
     actual suspend fun savePlainTextDataToFile(
         data: String,
         fileName: String
     ): String {
         try {
-            val filesDir= "/data/data/org.example.tourbookingkmp/files"
+            val filesDir= appContext.filesDir
             val file = File(filesDir, fileName)
             file.writeText(data)
             return "Successfully saved plain text to file."
@@ -25,13 +24,22 @@ actual class InternalStorageManager actual constructor () {
         fileName: String
     ): String {
         try {
-            val filesDir= "/data/data/org.example.tourbookingkmp/files"
+            val filesDir= appContext.filesDir
             val file = File(filesDir, fileName)
             val token = file.readText()
             return token
         } catch (e: Exception) {
             e.printStackTrace()
             return ""
+        }
+    }
+
+    // Companion object для получения передаваемого в класс context-а
+    companion object {
+        private lateinit var appContext: Context
+
+        fun init(context: Context) {
+            appContext = context.applicationContext
         }
     }
 }
