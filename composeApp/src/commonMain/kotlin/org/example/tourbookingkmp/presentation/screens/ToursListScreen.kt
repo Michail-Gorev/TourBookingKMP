@@ -41,7 +41,8 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun ToursListScreen(
     viewModel: GetAllToursViewModel = koinViewModel(),
-    navController: NavHostController
+    onTourDetailsClick: (Int) -> Unit
+//    navController: NavHostController
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val cityFilter by viewModel.cityFilter.collectAsState()
@@ -80,9 +81,11 @@ fun ToursListScreen(
                         cityFilter = cityFilter,
                         onCityFilterChange = viewModel::updateCityFilter,
                         tours = filteredTours,
-                        navController = navController
+                        onTourDetailsClick = onTourDetailsClick
+//                        navController = navController
                     )
                 }
+
                 is GetAllToursViewModel.UiState.Error -> {
                     ErrorScreen(
                         (uiState as GetAllToursViewModel.UiState.Error).message
@@ -99,7 +102,8 @@ private fun SuccessScreen(
     cityFilter: String,
     onCityFilterChange: (String) -> Unit,
     tours: List<Tour>,
-    navController: NavHostController
+    onTourDetailsClick: (Int) -> Unit
+//    navController: NavHostController
 ) {
     var showContent by rememberSaveable { mutableStateOf(true) }
 
@@ -139,7 +143,10 @@ private fun SuccessScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(tours) { tour ->
-                        TourCard(tour = tour, navController)
+                        TourCard(
+                            tour = tour,
+                            onDetailsClick = { onTourDetailsClick(it) }
+                        )
                     }
                 }
             }

@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.example.tourbookingkmp.navigation.Routes
+import org.example.tourbookingkmp.navigation.old.Routes
 import org.example.tourbookingkmp.presentation.viewModels.LoginUserByEmailViewModel.LoginScreenEvent
 import org.example.tourbookingkmp.presentation.viewModels.LoginUserByEmailViewModel
 

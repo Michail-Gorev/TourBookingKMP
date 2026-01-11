@@ -9,7 +9,7 @@ import org.example.tourbookingkmp.domain.models.TourDetails
 import org.example.tourbookingkmp.domain.usecases.GetTourDetailsByIdUseCase
 
 class GetTourDetailsViewModel(
-    private val tourId: Comparable<*>,
+    private val tourId: Int,
     private val useCase: GetTourDetailsByIdUseCase
 ) : ViewModel() {
 

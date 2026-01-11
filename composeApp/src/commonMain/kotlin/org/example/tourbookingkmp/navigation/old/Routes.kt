@@ -1,4 +1,4 @@
-package org.example.tourbookingkmp.navigation
+package org.example.tourbookingkmp.navigation.old
 
 object Routes {
     const val TOURS_LIST = "tours_list"

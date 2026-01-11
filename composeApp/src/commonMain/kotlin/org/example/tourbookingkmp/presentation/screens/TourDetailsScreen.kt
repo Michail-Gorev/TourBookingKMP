@@ -11,10 +11,15 @@ import org.example.tourbookingkmp.presentation.ui.TourDetailsCard
 import org.example.tourbookingkmp.presentation.viewModels.GetTourDetailsViewModel
 import org.koin.compose.viewmodel.koinViewModel
 import kotlinx.coroutines.launch
+import org.koin.core.parameter.ParametersDefinition
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun TourDetailsScreen(
-    viewModel: GetTourDetailsViewModel = koinViewModel()
+    id: Int,
+    viewModel: GetTourDetailsViewModel = koinViewModel{
+        parametersOf(id)
+    }
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }

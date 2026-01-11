@@ -18,7 +18,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import org.example.tourbookingkmp.navigation.Routes
+import org.example.tourbookingkmp.navigation.old.Routes
 import androidx.compose.foundation.text.KeyboardOptions
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

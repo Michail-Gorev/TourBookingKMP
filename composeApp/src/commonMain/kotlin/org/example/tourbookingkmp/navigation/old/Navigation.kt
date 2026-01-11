@@ -1,4 +1,4 @@
-package org.example.tourbookingkmp.navigation
+package org.example.tourbookingkmp.navigation.old
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
@@ -9,8 +9,6 @@ import androidx.navigation.navArgument
 import org.example.tourbookingkmp.domain.interfaces.repositories.UserTokenRepository
 import org.example.tourbookingkmp.presentation.screens.LoginScreen
 import org.example.tourbookingkmp.presentation.screens.RegistrationScreen
-import org.example.tourbookingkmp.presentation.screens.TourDetailsScreen
-import org.example.tourbookingkmp.presentation.screens.ToursListScreen
 import org.example.tourbookingkmp.presentation.viewModels.GetAllToursViewModel
 import org.example.tourbookingkmp.presentation.viewModels.GetTourDetailsViewModel
 import org.example.tourbookingkmp.presentation.viewModels.LoginUserByEmailViewModel
@@ -33,7 +31,7 @@ fun AppNavigation() {
     ) {
         composable(Routes.TOURS_LIST) {
             val viewModel: GetAllToursViewModel = koinViewModel()
-            ToursListScreen(viewModel = viewModel, navController = navController)
+//            ToursListScreen(viewModel = viewModel, navController = navController)
         }
         composable(
             Routes.TOUR_DETAILS,
@@ -42,7 +40,7 @@ fun AppNavigation() {
             val tourId = backStackEntry.savedStateHandle.get<Int>("tourId")
             val viewModel: GetTourDetailsViewModel =
                 koinViewModel(parameters = { parametersOf(tourId) })
-            TourDetailsScreen(viewModel = viewModel)
+//            TourDetailsScreen(viewModel = viewModel)
         }
         composable(Routes.LOGIN) {
             val viewModel: LoginUserByEmailViewModel =

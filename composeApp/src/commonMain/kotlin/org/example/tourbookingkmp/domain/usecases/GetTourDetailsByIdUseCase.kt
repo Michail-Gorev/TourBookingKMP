@@ -7,8 +7,8 @@ class GetTourDetailsByIdUseCase(
     private val repository: TourDetailsRepository
 ) {
 
-    suspend fun invoke(tourId: Comparable<*>): TourDetails {
-        val tourDetails: TourDetails = repository.fetchTourDetails(tourId.toString().toInt())
+    suspend fun invoke(tourId: Int): TourDetails {
+        val tourDetails: TourDetails = repository.fetchTourDetails(tourId)
         return tourDetails
     }
 }

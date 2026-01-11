@@ -20,7 +20,11 @@ import androidx.navigation.NavHostController
 import org.example.tourbookingkmp.domain.models.Tour
 
 @Composable
-fun TourCard(tour: Tour, navController: NavHostController) {
+fun TourCard(
+    tour: Tour,
+    onDetailsClick: (Int) -> Unit
+//    navController: NavHostController
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -64,7 +68,8 @@ fun TourCard(tour: Tour, navController: NavHostController) {
 
                 Button(
                     onClick = {
-                        navController.navigate("tour_details/${tour.id}")
+                        println("===========CLicked on tour with id: ${tour.id}")
+                        onDetailsClick((tour.id as String).toInt())
                     },
                     modifier = Modifier.widthIn(min = 100.dp)
                 ) {

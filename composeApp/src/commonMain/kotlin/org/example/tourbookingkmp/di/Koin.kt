@@ -42,7 +42,7 @@ val appModule = module {
 
     // ViewModels
     viewModel { GetAllToursViewModel(get(), get()) }
-    viewModel { (tourId: Comparable<*>) ->
+    viewModel { (tourId: Int) ->
         GetTourDetailsViewModel(tourId = tourId, useCase = get())
     }
     viewModel {
